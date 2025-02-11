@@ -1,8 +1,8 @@
 import { DiscoveryService } from '@golevelup/nestjs-discovery';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { Class } from 'type-fest';
-import { QueueProcessor } from './interfaces';
-import { QUEUE_JOB_PROCESSOR_METADATA_KEY, QUEUE_PROCESSOR_METADATA_KEY } from './constants/metadata.constants';
+import { QueueProcessor } from '../interfaces';
+import { QUEUE_JOB_PROCESSOR_METADATA_KEY, QUEUE_PROCESSOR_METADATA_KEY } from '../constants';
 
 interface QueueHandlerDescriptor {
   options: { skipOnFailure: boolean };
@@ -18,7 +18,7 @@ interface QueueProcessorRegistry {
 }
 
 @Injectable()
-export class QueueProcessorRegistryService implements OnApplicationBootstrap {
+export class ProcessorRegistryService implements OnApplicationBootstrap {
   private readonly registry: QueueProcessorRegistry = {};
 
   private readonly registryLoader: Promise<void>;
@@ -41,20 +41,6 @@ export class QueueProcessorRegistryService implements OnApplicationBootstrap {
       await this.registryLoader;
     }
     return this.getFromRegistry(queueName, jobName);
-  }
-
-  private getFromRegistry(queueName: string, jobName: string): QueueHandlerDescriptor[] {
-    return this.registry[queueName]?.[jobName] || [];
-  }
-
-  private addToRegistry(queueName: string, jobName: string, queueProcessors: QueueHandlerDescriptor): void {
-    if (!this.registry[queueName]) {
-      this.registry[queueName] = {};
-    }
-    if (!this.registry[queueName][jobName]) {
-      this.registry[queueName][jobName] = [];
-    }
-    this.registry[queueName][jobName].push(queueProcessors);
   }
 
   public async onApplicationBootstrap(): Promise<void> {
@@ -81,5 +67,19 @@ export class QueueProcessorRegistryService implements OnApplicationBootstrap {
       }),
     );
     this.registryResolver();
+  }
+
+  private getFromRegistry(queueName: string, jobName: string): QueueHandlerDescriptor[] {
+    return this.registry[queueName]?.[jobName] || [];
+  }
+
+  private addToRegistry(queueName: string, jobName: string, queueProcessors: QueueHandlerDescriptor): void {
+    if (!this.registry[queueName]) {
+      this.registry[queueName] = {};
+    }
+    if (!this.registry[queueName][jobName]) {
+      this.registry[queueName][jobName] = [];
+    }
+    this.registry[queueName][jobName].push(queueProcessors);
   }
 }

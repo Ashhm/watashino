@@ -1,7 +1,7 @@
-import { JobsOptions } from 'bullmq';
-import { BackoffOptions, RepeatOptions } from 'bullmq';
+import { BackoffOptions, JobsOptions } from 'bullmq';
 import { Expose, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsObject, IsOptional, IsString, Min, ValidateIf, ValidateNested } from 'class-validator';
+import { RepeatOptions } from 'bullmq/dist/esm/interfaces/repeat-options';
 
 export class QueueConfigBackoff implements BackoffOptions {
   @Expose({ name: 'QUEUE_CONFIG_BACKOFF_TYPE' })
@@ -38,18 +38,6 @@ export class QueueConfigRemoveOnFail {
   public count?: number = 100;
 }
 
-export class QueueConfigRepeatOptions implements RepeatOptions {
-  @IsString()
-  @IsOptional()
-  public pattern?: string;
-
-  @Expose({ name: 'QUEUE_CONFIG_REPEAT_EVERY' })
-  @IsNumber()
-  @Min(100)
-  @ValidateIf((object) => !object.pattern)
-  public every = 60_000;
-}
-
 export class BaseQueueConfig implements JobsOptions {
   @IsObject()
   @ValidateNested()
@@ -72,13 +60,19 @@ export class BaseQueueConfig implements JobsOptions {
   public attempts?: number = 5;
 }
 
-export class QueueConfig extends BaseQueueConfig {}
+export class SchedulerConfig implements RepeatOptions {
+  @Expose({ name: 'QUEUE_CONFIG_SCHEDULER_PATTERN' })
+  @IsString()
+  @IsOptional()
+  public pattern?: string;
 
-export class SchedulerConfig extends BaseQueueConfig {
-  @IsObject()
-  @ValidateNested()
-  @Type(() => QueueConfigRepeatOptions)
-  public repeat: QueueConfigRepeatOptions;
+  @Expose({ name: 'QUEUE_CONFIG_REPEAT_EVERY' })
+  @IsNumber()
+  @Min(100)
+  @ValidateIf((object) => !object.pattern)
+  public every = 60_000;
 }
+
+export class QueueConfig extends BaseQueueConfig {}
 
 export class FlowProducerConfig extends BaseQueueConfig {}

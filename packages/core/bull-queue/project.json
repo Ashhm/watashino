@@ -1,7 +1,7 @@
 {
-  "name": "queue",
+  "name": "bull-queue",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/core/queue/src",
+  "sourceRoot": "packages/core/bull-queue/src",
   "projectType": "library",
   "release": {
     "version": {
@@ -17,11 +17,11 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/core/queue",
-        "tsConfig": "packages/core/queue/tsconfig.lib.json",
-        "packageJson": "packages/core/queue/package.json",
-        "main": "packages/core/queue/src/index.ts",
-        "assets": ["packages/core/queue/*.md"]
+        "outputPath": "dist/packages/core/bull-queue",
+        "tsConfig": "packages/core/bull-queue/tsconfig.lib.json",
+        "packageJson": "packages/core/bull-queue/package.json",
+        "main": "packages/core/bull-queue/src/index.ts",
+        "assets": ["packages/core/bull-queue/*.md"]
       }
     },
     "nx-release-publish": {
