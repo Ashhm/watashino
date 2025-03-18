@@ -17,9 +17,7 @@
     "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": false,
-    "paths": {
-      "@nestjs/kitter/core/bull-queue": ["packages/core/bull-queue/src/index.ts"]
-    }
+    "paths": {}
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -6,7 +6,6 @@ import { DynamicModule, Module, NestModule } from '@nestjs/common';
 import { FactoryProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { ConfigModule, registerAs } from '@nestjs/config';
 import { ModuleRef } from '@nestjs/core';
-import { QueueBaseOptions } from 'bullmq';
 import { PartialDeep } from 'type-fest';
 import { BaseQueueConfig, FlowProducerConfig, QueueConfig, SchedulerConfig } from './config';
 import { processorProviderFactory, ProcessorRegistryModule } from './processor';
@@ -19,7 +18,12 @@ import _ = require('lodash');
 interface RegisterQueueOptions {
   name: string;
   config?: PartialDeep<BaseQueueConfig>;
-  options?: Omit<QueueBaseOptions, 'connection'>;
+  monitor?: boolean;
+}
+
+interface RegisterSchedulerOptions {
+  name: string;
+  config?: PartialDeep<SchedulerConfig>;
   monitor?: boolean;
 }
 
@@ -45,14 +49,14 @@ export class QueueModule extends ConfigurableModuleClass implements NestModule {
     flowProducers,
     processors,
   }: {
-    queues?: RegisterQueueOptions[] | string[];
-    schedulers?: RegisterQueueOptions[] | string[];
-    flowProducers?: RegisterQueueOptions[] | string[];
+    queues?: (RegisterQueueOptions | string)[];
+    schedulers?: (RegisterSchedulerOptions | string)[];
+    flowProducers?: (RegisterQueueOptions | string)[];
     processors?: string[];
   }) {
-    const queueRegisterOptions = this.normalizeQueueOptions(queues);
-    const schedulerRegisterOptions = this.normalizeQueueOptions(schedulers);
-    const flowProducerRegisterOptions = this.normalizeQueueOptions(flowProducers);
+    const queueRegisterOptions = this.normalizeQueueOptions<RegisterQueueOptions>(queues);
+    const schedulerRegisterOptions = this.normalizeQueueOptions<RegisterSchedulerOptions>(schedulers);
+    const flowProducerRegisterOptions = this.normalizeQueueOptions<RegisterQueueOptions>(flowProducers);
     const queueConfigModules = queueRegisterOptions.map((queue) => this.createConfigModule(queue, QueueConfig));
     const schedulerConfigModules = schedulerRegisterOptions.map((scheduler) =>
       this.createConfigModule(scheduler, SchedulerConfig),
@@ -93,10 +97,12 @@ export class QueueModule extends ConfigurableModuleClass implements NestModule {
     };
   }
 
-  private static normalizeQueueOptions(queueOptions: (string | RegisterQueueOptions)[] = []): RegisterQueueOptions[] {
+  private static normalizeQueueOptions<T extends RegisterQueueOptions | RegisterSchedulerOptions>(
+    queueOptions: (string | T)[] = [],
+  ): T[] {
     return queueOptions.map((queue) => {
       if (typeof queue === 'string') {
-        return { name: queue };
+        return { name: queue } as T;
       }
       return queue;
     });
@@ -106,27 +112,26 @@ export class QueueModule extends ConfigurableModuleClass implements NestModule {
     return queueNames.map(processorProviderFactory);
   }
 
-  private static createSchedulerDispatchers(registerQueueOptions: RegisterQueueOptions[]): FactoryProvider[] {
-    return registerQueueOptions.map(({ name }) => schedulerDispatcherProviderFactory(name));
+  private static createSchedulerDispatchers(options: RegisterSchedulerOptions[]): FactoryProvider[] {
+    return options.map(({ name }) => schedulerDispatcherProviderFactory(name));
   }
 
   private static createConfigModule(
-    registerQueueOptions: RegisterQueueOptions,
+    options: RegisterQueueOptions | RegisterSchedulerOptions,
     Config: typeof BaseQueueConfig | typeof SchedulerConfig,
   ) {
-    const { name, config } = registerQueueOptions;
+    const { name, config } = options;
     return ConfigModule.forFeature(registerAs(name, async () => _.merge(await buildConfigFromEnv(Config), config)));
   }
 
-  private static createQueueModule(registerQueueOptions: RegisterQueueOptions): DynamicModule {
-    const { name, options = {} } = registerQueueOptions;
+  private static createQueueModule(options: RegisterQueueOptions | RegisterSchedulerOptions): DynamicModule {
+    const { name } = options;
     return BullModule.registerQueueAsync({
       name,
       useFactory: (connectionOptions: ConnectionOptions) => {
         return {
           name,
           connection: connectionOptions,
-          ...options,
         };
       },
       inject: [MODULE_OPTIONS_TOKEN],
@@ -134,21 +139,20 @@ export class QueueModule extends ConfigurableModuleClass implements NestModule {
   }
 
   private static createFlowProducerModule(registerQueueOptions: RegisterQueueOptions): DynamicModule {
-    const { name, options = {} } = registerQueueOptions;
+    const { name } = registerQueueOptions;
     return BullModule.registerFlowProducerAsync({
       name,
       useFactory: (connectionOptions: ConnectionOptions) => {
         return {
           name,
           connection: connectionOptions,
-          ...options,
         };
       },
     });
   }
 
-  private static createBoardModule(registerQueueOptions: RegisterQueueOptions): DynamicModule {
-    const { name } = registerQueueOptions;
+  private static createBoardModule(options: RegisterQueueOptions | RegisterSchedulerOptions): DynamicModule {
+    const { name } = options;
     return BullBoardModule.forFeature({ name, adapter: BullMQAdapter });
   }
 

@@ -29,6 +29,13 @@
         "access": "public",
         "packageRoot": "dist/{projectRoot}"
       }
+    },
+    "example": {
+      "executor": "@nx/node:execute",
+      "options": {
+        "buildTarget": "build",
+        "runTarget": "start"
+      }
     }
   }
 }
