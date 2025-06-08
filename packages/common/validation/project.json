@@ -1,0 +1,26 @@
+{
+  "name": "@common/validation",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/common/validation/src",
+  "projectType": "library",
+  "tags": [
+    "common"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/common/validation",
+        "tsConfig": "packages/common/validation/tsconfig.lib.json",
+        "packageJson": "packages/common/validation/package.json",
+        "main": "packages/common/validation/src/index.ts",
+        "assets": [
+          "packages/common/validation/*.md"
+        ]
+      }
+    }
+  }
+}

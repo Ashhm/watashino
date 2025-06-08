@@ -1,0 +1,90 @@
+x-redis-cluster-base: &redis-cluster-base
+  image: docker.io/bitnami/redis-cluster:7.2
+
+name: redis-cluster
+
+services:
+  redis-cluster-0:
+    container_name: redis-cluster-0
+    <<: *redis-cluster-base
+    ports:
+      - 8000:6379
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8000'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+
+  redis-cluster-1:
+    container_name: redis-cluster-1
+    <<: *redis-cluster-base
+    ports:
+      - 8001:6380
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_PORT_NUMBER=6380'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8001'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+
+  redis-cluster-2:
+    container_name: redis-cluster-2
+    <<: *redis-cluster-base
+    ports:
+      - 8002:6381
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_PORT_NUMBER=6381'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8002'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+
+  redis-cluster-3:
+    container_name: redis-cluster-3
+    <<: *redis-cluster-base
+    ports:
+      - 8003:6382
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_PORT_NUMBER=6382'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8003'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+
+  redis-cluster-4:
+    container_name: redis-cluster-4
+    <<: *redis-cluster-base
+    ports:
+      - 8004:6383
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_PORT_NUMBER=6383'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8004'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+
+  redis-cluster-5:
+    container_name: redis-cluster-5
+    <<: *redis-cluster-base
+    ports:
+      - 8005:6384
+    depends_on:
+      - redis-cluster-0
+      - redis-cluster-1
+      - redis-cluster-2
+      - redis-cluster-3
+      - redis-cluster-4
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'REDIS_NODES=redis-cluster-0:6379 redis-cluster-1:6380 redis-cluster-2:6381 redis-cluster-3:6382 redis-cluster-4:6383 redis-cluster-5:6384'
+      - 'REDIS_PORT_NUMBER=6384'
+      - 'REDIS_CLUSTER_ANNOUNCE_HOSTNAME=localhost'
+      - 'REDIS_CLUSTER_ANNOUNCE_PORT=8005'
+      - 'REDIS_CLUSTER_PREFERRED_ENDPOINT_TYPE=hostname'
+      - 'REDIS_CLUSTER_REPLICAS=1'
+      - 'REDIS_CLUSTER_CREATOR=yes'
