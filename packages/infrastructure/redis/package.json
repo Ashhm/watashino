@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "A reusable NestJS module for Redis supporting Standalone, Cluster, and Sentinel modes with easy-to-use provider for injection",
   "type": "commonjs",
-  "main": "./index.js",
+  "main": "./src/index.js",
   "types": "./index.d.ts",
   "license": "MIT",
   "author": {
