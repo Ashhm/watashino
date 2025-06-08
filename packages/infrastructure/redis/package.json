@@ -1,7 +1,7 @@
 {
-  "name": "@watashino/scheduler",
+  "name": "@watashino/redis",
   "version": "0.0.1",
-  "description": "A powerful and flexible job scheduling library for NestJS applications, built on top of BullMQ",
+  "description": "A reusable NestJS module for Redis supporting Standalone, Cluster, and Sentinel modes with easy-to-use provider for injection",
   "type": "commonjs",
   "main": "./index.js",
   "types": "./index.d.ts",
@@ -13,11 +13,12 @@
   },
   "keywords": [
     "nestjs",
-    "scheduler",
-    "bullmq",
-    "queue",
-    "jobs",
-    "cron"
+    "redis",
+    "ioredis",
+    "cluster",
+    "sentinel",
+    "standalone",
+    "infrastructure"
   ],
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/Ashhm/watashino/issues"
   },
-  "homepage": "https://github.com/Ashhm/watashino/tree/main/packages/core/scheduler",
+  "homepage": "https://github.com/Ashhm/watashino/tree/main/packages/infrastructure/redis",
   "publishConfig": {
     "access": "public"
   },
@@ -34,9 +35,10 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@nestjs/bullmq": "^10.0.0 || ^11.0.0",
+    "ioredis": "^5.0.0",
+    "class-transformer": "*",
+    "class-validator": "*",
     "@nestjs/common": "^10.0.0 || ^11.0.0",
-    "@nestjs/core": "^10.0.0 || ^11.0.0",
-    "bullmq": "^5.40.0"
+    "@nestjs/config": "^4.0.0"
   }
 }

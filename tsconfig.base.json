@@ -30,6 +30,12 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "paths": {
+      "@common/validation": [
+        "packages/common/validation/src/index.ts"
+      ],
+      "@watashino/redis": [
+        "packages/infrastructure/redis/src/index.ts"
+      ],
       "@watashino/scheduler": [
         "packages/core/scheduler/src/index.ts"
       ]

@@ -1,0 +1,36 @@
+{
+  "name": "@watashino/redis",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/infrastructure/redis/src",
+  "projectType": "library",
+  "tags": [
+    "infra"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/infrastructure/redis",
+        "tsConfig": "packages/infrastructure/redis/tsconfig.lib.json",
+        "packageJson": "packages/infrastructure/redis/package.json",
+        "main": "packages/infrastructure/redis/src/index.ts",
+        "assets": [
+          "packages/infrastructure/redis/*.md"
+        ]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": false
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
+    }
+  }
+}
