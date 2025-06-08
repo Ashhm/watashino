@@ -1,3 +1,13 @@
+## 0.0.4 (2025-06-08)
+
+### 🚀 Features
+
+- **redis:** add Redis module with cluster and sentinel support ([9772701](https://github.com/Ashhm/watashino/commit/9772701))
+
+### ❤️ Thank You
+
+- Serhii Bulakh @Ashhm
+
 ## 0.0.2 (2025-06-04)
 
 ### 🚀 Features
