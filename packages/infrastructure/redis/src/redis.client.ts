@@ -1,3 +1,3 @@
-import Commander from 'ioredis/built/utils/Commander';
+import Redis from 'ioredis';
 
-export class RedisClient extends Commander {}
+export class RedisClient extends Redis {}

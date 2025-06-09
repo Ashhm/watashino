@@ -1,4 +1,4 @@
-import { Module, OnApplicationShutdown, Inject, Global } from '@nestjs/common';
+import { Module, OnApplicationShutdown, Global, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import Redis, { Cluster, ClusterOptions } from 'ioredis';
 import { RedisConfig } from './config/redis-config.type';
@@ -22,16 +22,24 @@ import { RedisClient } from './redis.client';
 })
 // TODO: Support custom config
 export class RedisModule extends ConfigurableModuleClass implements OnApplicationShutdown {
-  constructor(@Inject(RedisClient) private readonly redisClient: RedisClient) {
+  private readonly logger = new Logger(RedisModule.name);
+
+  constructor(private readonly redisClient: RedisClient) {
     super();
   }
 
   async onApplicationShutdown() {
-    // Close Redis connection when application shuts down
-    await this.redisClient.quit();
+    try {
+      await this.redisClient.quit();
+    } catch (error) {
+      this.logger.debug('Error while closing Redis connection:', error);
+      if (this.redisClient.status === 'ready') {
+        this.logger.error('Redis connection not closed');
+      }
+    }
   }
 
-  static createRedisClient(config: RedisConfig): RedisClient {
+  static createRedisClient(config: RedisConfig): Redis | Cluster {
     const { mode, options } = config;
 
     if (mode === 'cluster') {
