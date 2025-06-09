@@ -1,4 +1,4 @@
-import { Module, OnApplicationShutdown, Inject } from '@nestjs/common';
+import { Module, OnApplicationShutdown, Inject, Global } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import Redis, { Cluster, ClusterOptions } from 'ioredis';
 import { RedisConfig } from './config/redis-config.type';
@@ -6,6 +6,7 @@ import redisConfig from './config/redis.config';
 import { ConfigurableModuleClass } from './redis-module.definition';
 import { RedisClient } from './redis.client';
 
+@Global()
 @Module({
   imports: [ConfigModule.forFeature(redisConfig)],
   providers: [
