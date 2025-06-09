@@ -1,3 +1,13 @@
+## 0.0.11 (2025-06-09)
+
+### 🩹 Fixes
+
+- **redis:** make module global ([421256c](https://github.com/Ashhm/watashino/commit/421256c))
+
+### ❤️ Thank You
+
+- Serhii Bulakh @Ashhm
+
 ## 0.0.10 (2025-06-09)
 
 This was a version bump only, there were no code changes.

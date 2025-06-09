@@ -1,6 +1,6 @@
 {
   "name": "@watashino/redis",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A reusable NestJS module for Redis supporting Standalone, Cluster, and Sentinel modes with easy-to-use provider for injection",
   "main": "./index.cjs",
   "module": "./index.js",
