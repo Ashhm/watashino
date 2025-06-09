@@ -34,6 +34,9 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "bundledDependencies": [
+    "@common/validation"
+  ],
   "peerDependencies": {
     "ioredis": "^5.0.0",
     "class-transformer": "*",
