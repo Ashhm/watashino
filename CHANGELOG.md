@@ -1,3 +1,13 @@
+## 0.0.8 (2025-06-09)
+
+### 🩹 Fixes
+
+- **release:** add bundledDependencies for redis package ([953d75f](https://github.com/Ashhm/watashino/commit/953d75f))
+
+### ❤️ Thank You
+
+- Serhii Bulakh @Ashhm
+
 ## 0.0.7 (2025-06-08)
 
 This was a version bump only, there were no code changes.
