@@ -1,9 +1,9 @@
 {
   "name": "@watashino/redis",
-  "version": "0.0.8",
+  "version": "0.0.7",
   "description": "A reusable NestJS module for Redis supporting Standalone, Cluster, and Sentinel modes with easy-to-use provider for injection",
   "type": "commonjs",
-  "main": "./src/index.js",
+  "main": "./index.js",
   "types": "./src/index.d.ts",
   "license": "MIT",
   "author": {
@@ -34,9 +34,6 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "bundledDependencies": [
-    "@common/validation"
-  ],
   "peerDependencies": {
     "ioredis": "^5.0.0",
     "class-transformer": "*",

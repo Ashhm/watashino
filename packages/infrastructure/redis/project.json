@@ -8,10 +8,7 @@
   ],
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "executor": "@nx/esbuild:esbuild",
       "options": {
         "outputPath": "dist/packages/infrastructure/redis",
         "tsConfig": "packages/infrastructure/redis/tsconfig.lib.json",
@@ -19,6 +16,10 @@
         "main": "packages/infrastructure/redis/src/index.ts",
         "assets": [
           "packages/infrastructure/redis/*.md"
+        ],
+        "format": [
+          "esm",
+          "cjs"
         ]
       }
     },
