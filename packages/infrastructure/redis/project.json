@@ -3,9 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/infrastructure/redis/src",
   "projectType": "library",
-  "tags": [
-    "infra"
-  ],
+  "tags": ["infra"],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
@@ -14,13 +12,10 @@
         "tsConfig": "packages/infrastructure/redis/tsconfig.lib.json",
         "packageJson": "packages/infrastructure/redis/package.json",
         "main": "packages/infrastructure/redis/src/index.ts",
-        "assets": [
-          "packages/infrastructure/redis/*.md"
-        ],
-        "format": [
-          "esm",
-          "cjs"
-        ]
+        "target": "node18",
+        "assets": ["packages/infrastructure/redis/*.md"],
+        "format": ["esm", "cjs"],
+        "declaration": true
       }
     },
     "test": {
