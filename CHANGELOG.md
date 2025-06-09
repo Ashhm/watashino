@@ -1,3 +1,13 @@
+## 0.0.12 (2025-06-09)
+
+### 🚀 Features
+
+- **redis:** improve typings ([15a84c7](https://github.com/Ashhm/watashino/commit/15a84c7))
+
+### ❤️ Thank You
+
+- Serhii Bulakh @Ashhm
+
 ## 0.0.11 (2025-06-09)
 
 ### 🩹 Fixes
